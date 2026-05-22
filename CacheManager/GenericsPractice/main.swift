@@ -55,3 +55,5 @@ print()
 userCache.clearCache()
 print("After clear:", userCache.allItems)
 print("Total items:", userCache.totalItems)
+
+// try? try! / throws async / await try 

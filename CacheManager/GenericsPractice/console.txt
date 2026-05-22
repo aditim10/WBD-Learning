@@ -1,4 +1,4 @@
-Cache: [3: "Sharad", 2: "Ayan", 1: "Aditi"]
+Cache: [3: "Sharad", 1: "Aditi", 2: "Ayan"]
 
 Fetched value: Aditi
 
