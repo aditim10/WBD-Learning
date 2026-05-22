@@ -1,0 +1,15 @@
+Cache: [3: "Sharad", 2: "Ayan", 1: "Aditi"]
+
+Fetched value: Aditi
+
+Contains key 2: true
+Contains key 99: false
+
+After removing key 2: [3: "Sharad", 1: "Aditi"]
+
+Total items: 2
+
+Error: Item not found
+
+After clear: [:]
+Total items: 0
