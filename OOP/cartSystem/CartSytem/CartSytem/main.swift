@@ -1,61 +1,120 @@
 import Foundation
 
-print("---------------- SHOPPING CART SYSTEM ----------------\n")
+print("============= SHOPPING CART SYSTEM =============\n")
 
-// Products
-let macbook = Product(id: 1, name: "MacBook Pro", price: 95_000)
-let mouse = Product(id: 2, name: "Magic Mouse", price:  2_000)
-let keyboard = Product(id: 3, name: "Magic Keyboard", price:  4_500)
-let monitor = Product(id: 4, name: "Dell Monitor", price: 22_000)
+// MARK: Products
 
-// Cart + Summary
+let macbook = Product(
+    id: 1,
+    name: "MacBook Pro",
+    price: 95000
+)
+
+let mouse = Product(
+    id: 2,
+    name: "Magic Mouse",
+    price: 2000
+)
+
+let keyboard = Product(
+    id: 3,
+    name: "Magic Keyboard",
+    price: 4500
+)
+
+let monitor = Product(
+    id: 4,
+    name: "Dell Monitor",
+    price: 22000
+)
+
+// MARK: Cart Setup
+
 let cart = Cart()
-let summary = CartSummary(cart: cart)
 
-// Add items
-print("--- Adding Items ---")
-cart.addItem(macbook)
-cart.addItem(mouse, quantity: 2)
-cart.addItem(keyboard, quantity: 1)
-cart.addItem(monitor)
-cart.addItem(mouse, quantity: 1)   // adds to existing qty — now 3
+let cartSummary = CartSummary(cart: cart)
 
-// Show cart
-summary.showCartItems()
+do {
 
-// Remove one unit
-print("--- Remove One Unit ---")
-cart.removeItem(productId: 2)         // mouse qty: 3 -> 2
-summary.showCartItems()
+    // MARK: Add Items
 
-// Remove all units of a product
-print("--- Remove All Units ---")
-cart.removeAllUnits(productId: 4)     // remove monitor entirely
-summary.showCartItems()
+    try cart.addItem(macbook)
 
-// Balance check before discount
-print("--- Subtotal Before Discount ---")
-print("  Rs\(cart.totalAmount())")
+    try cart.addItem(
+        mouse,
+        quantity: 2
+    )
 
-// Apply discount
-print("\n--- Apply 10% Discount ---")
-cart.applyDiscount(percentage: 10)
-summary.showSummary()
+    try cart.addItem(
+        keyboard,
+        quantity: 1
+    )
 
-// Remove discount and reapply
-print("--- Remove Discount ---")
-cart.removeDiscount()
-summary.showSummary()
+    try cart.addItem(monitor)
 
-print("--- Apply 15% Discount ---")
-cart.applyDiscount(percentage: 15)
-summary.showSummary()
+    // MARK: Apply Item Discounts
 
-// Invalid discount
-print("--- Invalid Discount ---")
-cart.applyDiscount(percentage: 110)
+    try cart.applyItemDiscount(
+        productId: 2,
+        percentage: 10
+    )
 
-// Clear cart
-print("--- Clear Cart ---")
-cart.clearCart()
-summary.showCartItems()
+    try cart.applyItemDiscount(
+        productId: 3,
+        percentage: 5
+    )
+
+    // MARK: Apply Cart Discount
+
+    try cart.applyCartDiscount(
+        percentage: 15
+    )
+
+    // MARK: Display Cart
+
+    cartSummary.showCartItems()
+
+    // MARK: Display Summary
+
+    cartSummary.showSummary()
+
+    // MARK: Remove Single Quantity
+
+    try cart.removeSingleItem(
+        productId: 2
+    )
+
+    // MARK: Remove Entire Product
+
+    try cart.removeProduct(
+        productId: 4
+    )
+
+    // MARK: Display Updated Cart
+
+    cartSummary.showCartItems()
+
+    cartSummary.showSummary()
+
+    // MARK: Clear Cart
+
+    cart.clearCart()
+
+    cartSummary.showCartItems()
+
+} catch CartError.invalidQuantity {
+
+    print("Invalid quantity entered.")
+
+} catch CartError.invalidDiscount {
+
+    print("Invalid discount percentage.")
+
+} catch CartError.productNotFound {
+
+    print("Requested product not found in cart.")
+
+} catch {
+
+    print("Unexpected error occurred.")
+}
